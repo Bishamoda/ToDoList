@@ -1,5 +1,4 @@
-﻿
-using ToDoList.CLI.Models;
+﻿using ToDoList.CLI.Models;
 
 namespace ToDoList.CLI.Storages
 {
