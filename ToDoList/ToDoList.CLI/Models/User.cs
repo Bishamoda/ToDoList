@@ -9,6 +9,6 @@ namespace ToDoList.CLI.Models
         }
 
         public Guid Id { get; }
-        public string Email { get; set; }
+        public Email Email { get; set; }
     }
 }

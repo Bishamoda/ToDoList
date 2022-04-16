@@ -5,25 +5,33 @@ namespace ToDoList.CLI.Operations
 {
     public class CreatNewUserOperation : IOperation
     {
-		public string Name => "Создать нового пользователя";
+        public string Name => "Создать нового пользователя";
 
-        public void Execute()
+        public bool Execute()
         {
-			Console.Write("Введите ваш email:");
-			string? email = Console.ReadLine();
+            Console.Write("Введите ваш email:");
+            string? userInput = Console.ReadLine();
+            var (email, error) = Email.Create(userInput);
+            
+            if (email == null)
+            {
+                Console.WriteLine(error);
+                return false;
+            }
 
-			User newUser = new User
-			{
-				Email = email,
-			};
+            User newUser = new User()
+            {
+                Email = email
+            };
 
-			bool userCreated = UserStorage.Create(newUser);
-			if (!userCreated)
-			{
-				Console.WriteLine("Пользователь с таким email уже есть");
-			}
+            bool userCreated = UserStorage.Create(newUser);
+            if (!userCreated)
+            {
+                Console.WriteLine("Пользователь с таким email уже создан");
+                return false;
+            }
 
-			Console.WriteLine("Пользователь был успешно создан");
-		}
+            return true;
+        }
     }
 }

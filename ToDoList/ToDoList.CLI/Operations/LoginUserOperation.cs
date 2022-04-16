@@ -8,16 +8,26 @@ namespace ToDoList.CLI.Operations
     {
         public string Name => "Залогинься в системе";
 
-        public void Execute()
+        public bool Execute()
         {
             Console.Write("Введите ваш email:");
-            string? email = Console.ReadLine();
-            User? user = UserStorage.Get(email);
+            string? userInput = Console.ReadLine();
+            var (email, error) = Email.Create(userInput);
+            if (email == null)
+            {
+                Console.WriteLine(error);
+                return false;
+            }
 
+            User? user = UserStorage.Get(email);
             if (user == null)
             {
-                UserSession.CurrentUser = user;
+                Console.WriteLine("Пользователь не найден");
+                return false;
             }
+
+            UserSession.CurrentUser = user;
+            return true;
         }
     }
 }

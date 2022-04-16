@@ -9,6 +9,6 @@ namespace ToDoList.CLI.Operations
     public interface IOperation
     {
         string Name { get; }
-        void Execute();
+        bool Execute();
     }
 }

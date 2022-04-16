@@ -1,13 +1,31 @@
-﻿
+﻿using ToDoList.CLI.Models;
+using ToDoList.CLI.Storages;
+
 namespace ToDoList.CLI.Operations
 {
-    public class CreateNewTaskOperation : IOperation
+    public class CreateNewTaskOperation : IAuthorizedOperation
     {
-        public string Name { get; set; }
+        public string Name => "Создать новую задачу"; 
 
-        public void Execute()
+        public bool Execute(Guid userId)
         {
-            throw new NotImplementedException();
+            Console.WriteLine("Введите название задачи: ");
+            string? name = Console.ReadLine();
+
+            Console.WriteLine("Введите описание заадчи: ");
+            string? description = Console.ReadLine();
+
+            var (newTask, error) = ToDoTask.Create(name, description, userId);
+
+            if (newTask == null)
+            {
+                Console.WriteLine(error);
+                return false;
+            }
+
+            TaskStorage.Add(newTask);
+
+            return true;
         }
     }
 }
